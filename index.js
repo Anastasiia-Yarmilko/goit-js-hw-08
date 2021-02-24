@@ -9,6 +9,7 @@ const refs = {
     closeLightbox: document.querySelector('.lightbox__button'),
 }
 
+
 // Создание и рендер разметки по массиву данных и предоставленному шаблону.
 galleryData.forEach(({ preview, original, description }) => {
     refs.gallery.insertAdjacentHTML('afterbegin',
@@ -29,6 +30,7 @@ galleryData.forEach(({ preview, original, description }) => {
 }
 )
 
+
 // Реализация делегирования на галерее ul.js-gallery и получение url большого изображения.
 // Открытие модального окна по клику на элементе галереи.
 refs.gallery.addEventListener('click', openLightboxWindow);
@@ -45,15 +47,16 @@ function openLightboxWindow (event) {
     setOriginalImageSrc(originalImgUrl, imageAlt);
 }
 
+
 // Подмена значения атрибута src элемента img.lightbox__image.
 function setOriginalImageSrc(src = '', alt = '') {
     refs.lightboxImage.setAttribute('src', src);
     refs.lightboxImage.setAttribute('alt', alt);
 }
 
+
 // Закрытие модального окна по клику на кнопку button[data-action="close-lightbox"].
 // Очистка значения атрибута src элемента img.lightbox__image. Это необходимо для того, чтобы при следующем открытии модального окна, пока грузится изображение, мы не видели предыдущее.
-
 const closeLighboxWindow = () => {
     refs.lightbox.classList.remove('is-open');
     refs.lightboxImage.removeAttribute('src');
@@ -61,14 +64,17 @@ const closeLighboxWindow = () => {
 
 refs.closeLightbox.addEventListener('click', closeLighboxWindow);
 
-// Закрытие модального окна по нажатию клавиши ESC.
+
 // Закрытие модального окна по клику на div.lightbox__overlay.
+refs.lightboxOverlay.addEventListener('click', closeLighboxWindow);
+
+
+// Закрытие модального окна по нажатию клавиши ESC.
 const escButton = (event) => {
-    if (event.keyKode !== 27 || event.target.nodeName === 'overlay') {
+    if (event.keyCode === 27) {
         refs.lightbox.classList.remove('is-open');
         refs.lightboxImage.removeAttribute('src');
     }
 }
 
 document.addEventListener('keydown', escButton);
-refs.lightboxOverlay.addEventListener('click', escButton);
