@@ -31,7 +31,6 @@ galleryData.forEach(({ preview, original, description }) => {
 
 // Реализация делегирования на галерее ul.js-gallery и получение url большого изображения.
 // Открытие модального окна по клику на элементе галереи.
-
 refs.gallery.addEventListener('click', openLightboxWindow);
 
 function openLightboxWindow (event) {
@@ -54,3 +53,10 @@ function setOriginalImageSrc(src = '', alt = '') {
 
 // Закрытие модального окна по клику на кнопку button[data-action="close-lightbox"].
 // Очистка значения атрибута src элемента img.lightbox__image. Это необходимо для того, чтобы при следующем открытии модального окна, пока грузится изображение, мы не видели предыдущее.
+refs.closeLightbox.addEventListener('click', closeLighboxWindow);
+
+function closeLighboxWindow() {
+    refs.lightbox.classList.remove('is-open');
+    refs.lightboxImage.removeAttribute('src');
+}
+
