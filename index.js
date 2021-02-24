@@ -53,10 +53,22 @@ function setOriginalImageSrc(src = '', alt = '') {
 
 // Закрытие модального окна по клику на кнопку button[data-action="close-lightbox"].
 // Очистка значения атрибута src элемента img.lightbox__image. Это необходимо для того, чтобы при следующем открытии модального окна, пока грузится изображение, мы не видели предыдущее.
-refs.closeLightbox.addEventListener('click', closeLighboxWindow);
 
-function closeLighboxWindow() {
+const closeLighboxWindow = () => {
     refs.lightbox.classList.remove('is-open');
     refs.lightboxImage.removeAttribute('src');
 }
 
+refs.closeLightbox.addEventListener('click', closeLighboxWindow);
+
+// Закрытие модального окна по нажатию клавиши ESC.
+// Закрытие модального окна по клику на div.lightbox__overlay.
+const escButton = (event) => {
+    if (event.keyKode !== 27 || event.target.nodeName === 'overlay') {
+        refs.lightbox.classList.remove('is-open');
+        refs.lightboxImage.removeAttribute('src');
+    }
+}
+
+document.addEventListener('keydown', escButton);
+refs.lightboxOverlay.addEventListener('click', escButton);
