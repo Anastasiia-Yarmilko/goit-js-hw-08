@@ -71,9 +71,9 @@ refs.lightboxOverlay.addEventListener('click', closeLighboxWindow);
 
 // Закрытие модального окна по нажатию клавиши ESC.
 const escButton = (event) => {
-    if (event.keyCode === 27) {
-        refs.lightbox.classList.remove('is-open');
-        refs.lightboxImage.removeAttribute('src');
+    if (refs.lightbox.classList.contains('is-open') && event.keyCode === 27) {
+            refs.lightbox.classList.remove('is-open');
+            refs.lightboxImage.removeAttribute('src');
     }
 }
 
