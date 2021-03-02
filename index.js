@@ -9,23 +9,22 @@ const refs = {
     closeLightbox: document.querySelector('.lightbox__button'),
 }
 
-
 // Создание и рендер разметки по массиву данных и предоставленному шаблону.
 galleryData.forEach(({ preview, original, description }) => {
     refs.gallery.insertAdjacentHTML('afterbegin',
         `<li class="gallery__item">
-  <a
-    class="gallery__link"
-    href=${original}
-  >
-    <img
-      class="gallery__image"
-      src=${preview}
-      data-source=${original}
-      alt=${description}
-    />
-  </a>
-</li>`
+            <a
+                class="gallery__link"
+                href=${original}
+            >
+                <img
+                class="gallery__image"
+                src=${preview}
+                data-source=${original}
+                alt=${description}
+                />
+            </a>
+        </li>`
     )
 }
 )
@@ -33,11 +32,9 @@ galleryData.forEach(({ preview, original, description }) => {
 
 // Реализация делегирования на галерее ul.js-gallery и получение url большого изображения.
 // Открытие модального окна по клику на элементе галереи.
-refs.gallery.addEventListener('click', openLightboxWindow);
 
 function openLightboxWindow (event) {
     event.preventDefault();
-    console.log(event.target);
     const originalImgUrl = event.target.dataset.source;
     const imageAlt = event.target.getAttribute('alt');
     
@@ -45,14 +42,16 @@ function openLightboxWindow (event) {
     
     refs.lightbox.classList.add('is-open');
     setOriginalImageSrc(originalImgUrl, imageAlt);
-}
-
+    document.addEventListener('keydown', escButton);
+};
 
 // Подмена значения атрибута src элемента img.lightbox__image.
 function setOriginalImageSrc(src = '', alt = '') {
     refs.lightboxImage.setAttribute('src', src);
     refs.lightboxImage.setAttribute('alt', alt);
-}
+};
+
+refs.gallery.addEventListener('click', openLightboxWindow);
 
 
 // Закрытие модального окна по клику на кнопку button[data-action="close-lightbox"].
@@ -60,7 +59,8 @@ function setOriginalImageSrc(src = '', alt = '') {
 const closeLighboxWindow = () => {
     refs.lightbox.classList.remove('is-open');
     refs.lightboxImage.removeAttribute('src');
-}
+    document.removeEventListener('keydown', escButton);
+};
 
 refs.closeLightbox.addEventListener('click', closeLighboxWindow);
 
@@ -70,11 +70,9 @@ refs.lightboxOverlay.addEventListener('click', closeLighboxWindow);
 
 
 // Закрытие модального окна по нажатию клавиши ESC.
-const escButton = (event) => {
-    if (refs.lightbox.classList.contains('is-open') && event.keyCode === 27) {
-            refs.lightbox.classList.remove('is-open');
-            refs.lightboxImage.removeAttribute('src');
-    }
-}
+function escButton (event) {
+    if (event.keyCode !== 27) return; 
 
-document.addEventListener('keydown', escButton);
+    refs.lightbox.classList.remove('is-open');
+    refs.lightboxImage.removeAttribute('src');
+};
